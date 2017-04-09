@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 //添加mongodb依赖
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://127.0.0.1/admin') //连接本地数据库
-console.log('mongoose' , mongoose) ;
+//console.log('mongoose' , mongoose) ;
 
 var index = require('./routes/index');
 var users = require('./routes/users');
