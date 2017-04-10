@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+//添加mongo对象实体类
+//var mUsers = require('./modules/users.js') ;
+
 var mongoServer = require('./routes/mongoServer') ;
 
 //****************添加mongodb**************
@@ -19,8 +22,8 @@ var db = mongoose.connect('mongodb://127.0.0.1/myEbc') //连接本地数据库
 var Schema = mongoose.Schema ;//创建模型
 var testSchema = new Schema({name : String , id : String}) ;
 var test = db.model('test' , testSchema) ;
-console.log("the db is :" , db) ;
-console.log( "the test is :" , test) ;
+//console.log("the db is :" , db) ;
+//console.log( "the test is :" , test) ;
 //****************************************
 
 var app = express();

@@ -5,46 +5,74 @@
 var express = require('express');
 var router = express.Router();
 
-var MongoClient = require('mongodb').MongoClient;
-var Server      = require('mongodb').server;
+var mongodb = require('mongodb');
+var server = new mongodb.Server('127.0.0.1' , 27017 , {auto_reconnect:true}) ;
+var  db = new mongodb.Db('myEbc', server, {safe:true});
 
-console.log("Server is ...." , Server) ;
-// 创建客户端连接对象
-/*var client = new MongoClient( new Server('localhost', 27017, {
-    socketOpations: { connectTimeoutMS: 500 },
-    poolSize: 5,
-    auto_reconnect: true
-}, {
-    numberOfRetries: 3,
-    retryMilliSeconds: 500
-}));
+db.open(function(err, db) {
+    if (!err) {
+        console.log('connect db');
+        // 连接Collection（可以认为是mysql的table）
+        // 第1种连接方式
+        // db.collection('mycoll',{safe:true}, function(err, collection){
+        //     if(err){
+        //         console.log(err);
+        //     }
+        // });
+        // 第2种连接方式
+        db.createCollection('mycoll', {safe:true}, function(err, collection){
+            if(err){
+                console.log(err);
+            }else{
+                //新增数据
+                // var tmp1 = {id:'1',title:'hello',number:1};
+                //          collection.insert(tmp1,{safe:true},function(err, result){
+                //              console.log(result);
+                //          });
+                //更新数据
+                // collection.update({title:'hello'}, {$set:{number:3}}, {safe:true}, function(err, result){
+                //     console.log(result);
+                // });
+                // 删除数据
+                // collection.remove({title:'hello'},{safe:true},function(err,result){
+                //                   console.log(result);
+                //               });
 
-// 打开对服务器端MongoDB数据库的连接
-client.open(function(err, client) {
-    if ( err ) {
-        console.log('连接失败！');
-    } else {
-        var db = client.db('blogdb');  // 建立到数据库blogdb的连接
-        if ( db ) {
-            console.log('连接成功');
-            db.authenticate('username', 'pwd', function(err, result) {   // 对用户数据库身份进行验证
-                if ( err ) {
-                    console.log('数据库用户身份验证失败');
-                    client.close();  // 关闭对MongoDB的连接
-                    console.log('连接已关闭......');
-                } else {
-                    console.log('用户身份验证通过');
-                    db.logout(function (err, result) {  // 关闭对数据库的连接，即退出数据库
-                        if ( !err ) {
-                            console.log('退出数据库出错');
-                        }
+                // console.log(collection);
+                // 查询数据
+                var tmp1 = {title:'hello'};
+                var tmp2 = {title:'world'};
+                collection.insert([tmp1,tmp2],{safe:true},function(err,result){
+                    console.log(result);
+                });
+                collection.find().toArray(function(err,docs){
+                    console.log('find');
+                    console.log(docs);
+                });
+                collection.findOne(function(err,doc){
+                    console.log('findOne');
+                    console.log(doc);
+                });
+            }
 
-                        client.close();  // 关闭对MongoDB的连接
-                        console.log( '已关闭连接......' );
-                    });
-                }
-            });
-        }
+        });
+        // console.log('delete ...');
+        // //删除Collection
+        // db.dropCollection('mycoll',{safe:true},function(err,result){
+
+        //           if(err){
+
+        //         console.log('err:');
+        //         console.log(err);
+        //     }else{
+        //         console.log('ok:');
+        //         console.log(result);
+        //     }
+        //       });
+
+    }else{
+        console.log(err) ;
     }
-});*/
+}) ;
+
 module.exports = router;
