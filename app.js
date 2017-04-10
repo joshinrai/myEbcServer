@@ -5,14 +5,23 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-//添加mongodb依赖
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://127.0.0.1/admin') //连接本地数据库
-//console.log('mongoose' , mongoose) ;
-
 var index = require('./routes/index');
 var users = require('./routes/users');
 var mongoServer = require('./routes/mongoServer') ;
+
+//****************添加mongodb**************
+//添加mongodb依赖
+var mongoose = require('mongoose');
+var db = mongoose.connect('mongodb://127.0.0.1/myEbc') //连接本地数据库
+//console.log('mongoose' , mongoose) ;
+
+//测试nodejs连接mongodb
+var Schema = mongoose.Schema ;//创建模型
+var testSchema = new Schema({name : String , id : String}) ;
+var test = db.model('test' , testSchema) ;
+console.log("the db is :" , db) ;
+console.log( "the test is :" , test) ;
+//****************************************
 
 var app = express();
 

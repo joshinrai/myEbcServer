@@ -3,7 +3,7 @@
  */
 var mongoose = require('mongoose');
 
-//申明一个mongoons对象
+//申明一个mongoose对象
 var UsersSchema = new mongoose.Schema({
     name: String,
     paw: String,
